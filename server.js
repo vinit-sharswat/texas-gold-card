@@ -1,4 +1,6 @@
 // ToDo: Setup Prometheus to track the application and winston to log messages beautifully
+// ToDo: Setup refreshAccessToken code so that user is not logged out at any point in time
+
 const express = require("express");
 const cors = require("cors");
 const swaggerUI = require("swagger-ui-express");
