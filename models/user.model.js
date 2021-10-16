@@ -7,6 +7,16 @@ const User = mongoose.model(
         email: String,
         password: String,
         phoneNumber: String,
+        fullName: String,
+        profilePicture: {
+            data: Buffer,
+            contentType: String
+        },
+        dob: String,
+        address: String,
+        city: String,
+        state: String,
+        zipCode: String,
         roles: [
             {
                 type: mongoose.Schema.Types.ObjectId,

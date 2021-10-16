@@ -5,11 +5,12 @@ const express = require("express");
 const cors = require("cors");
 var bcrypt = require("bcryptjs");
 const swaggerUI = require("swagger-ui-express");
-
+var fileupload = require("express-fileupload");
 const dbConfig = require("./config/db.config");
 const docs = require('./docs');
 
 const app = express();
+app.use(fileupload());
 
 var corsOptions = {
     origin: "http://localhost:8081"
@@ -19,7 +20,6 @@ app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
 app.use(express.json());
-
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
@@ -94,7 +94,14 @@ function initial() {
                     email: "chirpy.coders@gmail.com",
                     password: bcrypt.hashSync("texas-gold-card", 8),
                     phoneNumber: "919098991882",
-                    roles: [data._id]
+                    roles: [data._id],
+                    fullName: "Chirpy Coders",
+                    profilePicture: { "data": "", "contentType": "" },
+                    dob: "07-09-1994",
+                    address: "Dalibaba",
+                    city: "Satna",
+                    state: "Madhya Pradesh",
+                    zipCode: "485001"
                 }).save(err => {
                     if (err) {
                         console.log("error", err);
