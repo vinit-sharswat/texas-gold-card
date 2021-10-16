@@ -1,0 +1,26 @@
+{
+  "name": "nodejs-app",
+  "version": "1.0.0",
+  "description": "Code to take care of the entire backend application",
+  "main": "server.js",
+  "scripts": {
+    "start": "npm server.js"
+  },
+  "keywords": [
+    "mongoose",
+    "nodejs",
+    "login",
+    "authentication",
+    "jwt"
+  ],
+  "author": "Chirpy.Coders",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.0.11"
+  }
+}
