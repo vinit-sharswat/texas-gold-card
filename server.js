@@ -1,8 +1,10 @@
 // ToDo: Setup Prometheus to track the application and winston to log messages beautifully
 const express = require("express");
 const cors = require("cors");
+const swaggerUI = require("swagger-ui-express");
 
 const dbConfig = require("./config/db.config");
+const docs = require('./docs');
 
 const app = express();
 
@@ -17,6 +19,8 @@ app.use(express.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
+
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(docs));
 
 const db = require("./models");
 const Role = db.role;
