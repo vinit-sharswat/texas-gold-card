@@ -1,4 +1,4 @@
-exports.allAccess = (req, res) => {
+exports.changePassword = (req, res) => {
     res.status(200).send("Public Content.");
 };
 
