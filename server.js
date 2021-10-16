@@ -3,6 +3,7 @@
 
 const express = require("express");
 const cors = require("cors");
+var bcrypt = require("bcryptjs");
 const swaggerUI = require("swagger-ui-express");
 
 const dbConfig = require("./config/db.config");
@@ -26,6 +27,7 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(docs));
 
 const db = require("./models");
 const Role = db.role;
+const User = db.user;
 
 db.mongoose
     .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
@@ -42,12 +44,12 @@ db.mongoose
     });
 
 app.get("/", (req, res) => {
-    res.json({ message: "Welcome to Backend application. Connect with chirpy.coders for this application" });
+    res.send(`<h1>Welcome to Backend application.</h1><b>Have a look at the Swagger Documentation at /api-docs.</b><br><br>Connect with chirpy.coders@gmail.com for this application`);
 });
 
 // routes
 require('./routes/auth.routes')(app);
-require('./routes/user.routes')(app);
+require('./routes/api.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8000;
@@ -57,7 +59,7 @@ app.listen(PORT, () => {
 
 function initial() {
     Role.estimatedDocumentCount((err, count) => {
-        if (!err && count === 0) {
+        if (!err && count != 5) {
             new Role({
                 name: "user"
             }).save(err => {
@@ -69,16 +71,6 @@ function initial() {
             });
 
             new Role({
-                name: "moderator"
-            }).save(err => {
-                if (err) {
-                    console.log("error", err);
-                }
-
-                console.log("added 'moderator' to roles collection");
-            });
-
-            new Role({
                 name: "admin"
             }).save(err => {
                 if (err) {
@@ -87,6 +79,48 @@ function initial() {
 
                 console.log("added 'admin' to roles collection");
             });
+
+            new Role({
+                name: "superuser"
+            }).save((err, data) => {
+                if (err) {
+                    console.log("error", err);
+                }
+
+                console.log("added 'superuser' to roles collection");
+
+                new User({
+                    username: "chirpy",
+                    email: "chirpy.coders@gmail.com",
+                    password: bcrypt.hashSync("texas-gold-card", 8),
+                    phoneNumber: "919098991882",
+                    roles: [data._id]
+                }).save(err => {
+                    if (err) {
+                        console.log("error", err);
+                    }
+                    console.log(`added username:chirpy with password:texas-gold-card to role superuser`);
+                });
+            });
+
+            new Role({
+                name: "member"
+            }).save(err => {
+                if (err) {
+                    console.log("error", err);
+                }
+
+                console.log("added 'member' to roles collection");
+            });
+            new Role({
+                name: "seller"
+            }).save(err => {
+                if (err) {
+                    console.log("error", err);
+                }
+                console.log("added 'seller' to roles collection");
+            });
+
         }
     });
 }
