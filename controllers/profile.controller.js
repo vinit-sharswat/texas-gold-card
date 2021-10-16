@@ -1,15 +1,31 @@
+var bcrypt = require("bcryptjs");
+const db = require("../models");
+const User = db.user;
+
 exports.changePassword = (req, res) => {
-    res.status(200).send("Public Content.");
+    User.findByIdAndUpdate({ "_id": req.userId }, { "password": bcrypt.hashSync(req.body.password, 8) }, function (err, result) {
+        if (err) {
+            console.error(err)
+        }
+        else {
+            return res.status(200).send({ message: "Password changed successfully" });
+        }
+    })
 };
 
-exports.userBoard = (req, res) => {
-    res.status(200).send("User Content.");
-};
-
-exports.adminBoard = (req, res) => {
-    res.status(200).send("Admin Content.");
-};
-
-exports.moderatorBoard = (req, res) => {
-    res.status(200).send("Moderator Content.");
+exports.uploadProfilePhoto = (req, res) => {
+    console.log(req.files)
+    User.findByIdAndUpdate({ "_id": req.userId }, {
+        "profilePicture": {
+            data: req.files.userPhoto.data,
+            contentType: req.files.userPhoto.mimetype
+        }
+    }, function (err, result) {
+        if (err) {
+            console.error(err)
+        }
+        else {
+            return res.status(200).send({ message: "Profile Photo uploaded successfully" });
+        }
+    })
 };

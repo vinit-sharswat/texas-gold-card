@@ -10,7 +10,9 @@ module.exports = function (app) {
         next();
     });
 
-    app.post("/profile/changePassword", [authJwt.verifyToken], profileController.changePassword);
+    app.post("/api/profile/changePassword", [authJwt.verifyToken], profileController.changePassword);
+
+    app.post("/api/profile/uploadProfilePhoto", [authJwt.verifyToken], profileController.uploadProfilePhoto);
 
     // app.get("/api/test/all", controller.allAccess);
 
