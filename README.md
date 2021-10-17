@@ -25,3 +25,5 @@ EMAIL_PASSWORD = <Password of the email from where the OTP will be sent>
 ```
 ## Contributing
 We love contributions!! Please start by creating a github issue and we will help you out.
+## License
+[See LICENSE](LICENSE)
