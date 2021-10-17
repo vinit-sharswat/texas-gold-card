@@ -101,7 +101,9 @@ function initial() {
                     address: "Dalibaba",
                     city: "Satna",
                     state: "Madhya Pradesh",
-                    zipCode: "485001"
+                    zipCode: "485001",
+                    emailAuth: false,
+                    phoneAuth: false
                 }).save(err => {
                     if (err) {
                         console.log("error", err);
