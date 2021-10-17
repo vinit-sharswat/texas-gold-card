@@ -100,22 +100,26 @@ exports.sendEmailOtp = (req, res) => {
                 } else {
                     console.log('Email sent: ' + info.response);
                     let current_dateTime = new Date();
-                    new Otp({
+
+                    otp_input = {
                         otp: otp,
                         created_at: current_dateTime,
                         expiration_time: AddMinutesToDate(current_dateTime, 5),
                         validation_type: "email",
-                        validation_value: result.email
-                    }).save(err => {
-                        if (err) {
-                            console.log("error", err);
+                        user: req.userId
+                    }
+                    options = { upsert: true, new: true, setDefaultsOnInsert: true };
+
+                    // Find the document
+                    Otp.findOneAndUpdate({ "validation_type": "email", "user": req.userId }, otp_input, options, function (error, result) {
+                        if (error) {
+                            console.log(error)
                         }
-                        else {
+                        else
                             return res.status(200).send('OTP has been sent successfully on email');
-                        }
                     });
                 }
             });
         }
-    })
+    });
 }

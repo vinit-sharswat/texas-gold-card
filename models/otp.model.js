@@ -7,7 +7,10 @@ const otp = mongoose.model(
         created_at: Date,
         expiration_time: Date,
         validation_type: String,
-        validation_value: String
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        }
     })
 );
 
