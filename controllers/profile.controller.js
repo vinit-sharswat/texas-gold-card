@@ -123,3 +123,44 @@ exports.sendEmailOtp = (req, res) => {
         }
     });
 }
+
+exports.verifyOtp = (req, res) => {
+    Otp.findOne({
+        "user": req.userId,
+        "validation_type": req.body.validation_type,
+        "expiration_time": { $gt: new Date() }
+    }, { otp: 1 }, function (err, result) {
+        if (err) {
+            console.error(err)
+        }
+        else {
+            console.log(result)
+            if (result) {
+                if (result.otp === req.body.otp) {
+                    // OTP Matched
+                    let data = { "phoneAuth": true }
+                    if (req.body.validation_type === "email") {
+                        data = { "emailAuth": true }
+                    }
+                    User.findOneAndUpdate({
+                        "user": req.userId
+                    }, data, function (err, result) {
+                        if (err) {
+                            console.log(err)
+                        }
+                        else {
+                            return res.status(200).send('OTP matched');
+                        }
+                    })
+                }
+                else {
+                    return res.status(400).send('OTP did not match');
+                }
+            }
+            else {
+                console.log("Record not found for OTP: OTP Expired")
+                return res.status(400).send('OTP has been expired');
+            }
+        }
+    })
+}

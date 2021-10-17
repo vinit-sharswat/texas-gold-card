@@ -20,6 +20,8 @@ module.exports = function (app) {
 
     app.post("/api/profile/sendEmailOtp", [authJwt.verifyToken], profileController.sendEmailOtp);
 
+    app.post("/api/profile/verifyOtp", [authJwt.verifyToken], profileController.verifyOtp);
+
     // app.get("/api/test/all", controller.allAccess);
 
     // app.get("/api/test/user", [authJwt.verifyToken], controller.userBoard);
