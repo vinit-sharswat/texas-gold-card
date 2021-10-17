@@ -17,6 +17,8 @@ const User = mongoose.model(
         city: String,
         state: String,
         zipCode: String,
+        emailAuth: Boolean,
+        phoneAuth: Boolean,
         roles: [
             {
                 type: mongoose.Schema.Types.ObjectId,

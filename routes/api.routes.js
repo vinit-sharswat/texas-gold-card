@@ -18,6 +18,8 @@ module.exports = function (app) {
 
     app.get("/api/profile/getProfile", [authJwt.verifyToken], profileController.getProfile);
 
+    app.post("/api/profile/sendEmailOtp", [authJwt.verifyToken], profileController.sendEmailOtp);
+
     // app.get("/api/test/all", controller.allAccess);
 
     // app.get("/api/test/user", [authJwt.verifyToken], controller.userBoard);
