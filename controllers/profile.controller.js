@@ -136,7 +136,6 @@ exports.verifyOtp = (req, res) => {
             res.status(500).send({ message: err });
         }
         else {
-            console.log(result)
             if (result) {
                 if (result.otp === req.body.otp) {
                     // OTP Matched
