@@ -3,11 +3,12 @@ const mongoose = require("mongoose");
 const User = mongoose.model(
     "User",
     new mongoose.Schema({
-        username: String,
+        applicationType: String,
         email: String,
         password: String,
         phoneNumber: String,
-        fullName: String,
+        firstName: String,
+        lastName: String,
         profilePicture: {
             data: Buffer,
             contentType: String
@@ -19,6 +20,9 @@ const User = mongoose.model(
         zipCode: String,
         emailAuth: Boolean,
         phoneAuth: Boolean,
+        referredBy: String,
+        numberOfCards: Number,
+        groupAffliations: String,
         roles: [
             {
                 type: mongoose.Schema.Types.ObjectId,

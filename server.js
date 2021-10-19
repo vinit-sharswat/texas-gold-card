@@ -59,7 +59,7 @@ app.listen(PORT, () => {
 
 function initial() {
     Role.estimatedDocumentCount((err, count) => {
-        if (!err && count != 5) {
+        if (!err && count == 0) {
             new Role({
                 name: "user"
             }).save(err => {
@@ -90,20 +90,24 @@ function initial() {
                 console.log("added 'superuser' to roles collection");
 
                 new User({
-                    username: "chirpy",
+                    applicationType: "individual",
                     email: "chirpy.coders@gmail.com",
                     password: bcrypt.hashSync("texas-gold-card", 8),
                     phoneNumber: "919098991882",
-                    roles: [data._id],
-                    fullName: "Chirpy Coders",
+                    firstName: "Chirpy",
+                    lastName: "Coders",
                     profilePicture: { "data": "", "contentType": "" },
                     dob: "07-09-1994",
                     address: "Dalibaba",
                     city: "Satna",
                     state: "Madhya Pradesh",
                     zipCode: "485001",
-                    emailAuth: false,
-                    phoneAuth: false
+                    emailAuth: true,
+                    phoneAuth: true,
+                    referredBy: "",
+                    numberOfCards: 1,
+                    groupAffliations: "",
+                    roles: [data._id],
                 }).save(err => {
                     if (err) {
                         console.log("error", err);

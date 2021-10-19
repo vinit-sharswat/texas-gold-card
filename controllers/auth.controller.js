@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const config = require("../config/auth.config");
 const db = require("../models");
 const User = db.user;
@@ -8,10 +9,26 @@ var bcrypt = require("bcryptjs");
 
 exports.signup = (req, res) => {
     const user = new User({
-        username: req.body.username,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8),
-        phoneNumber: req.body.phoneNumber
+        phoneNumber: req.body.phoneNumber,
+        applicationType: req.body.applicationType,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        profilePicture: {
+            data: "",
+            contentType: "image/png"
+        },
+        dob: req.body.dob,
+        address: req.body.address,
+        city: req.body.city,
+        state: req.body.state,
+        zipCode: req.body.zipCode,
+        emailAuth: false,
+        phoneAuth: false,
+        referredBy: req.body.referredBy,
+        numberOfCards: req.body.numberOfCards,
+        groupAffliations: req.body.groupAffliations
     });
 
     user.save((err, user) => {
@@ -65,7 +82,7 @@ exports.signup = (req, res) => {
 
 exports.signin = (req, res) => {
     User.findOne({
-        username: req.body.username
+        email: req.body.email
     })
         .populate("roles", "-__v")
         .exec((err, user) => {
@@ -101,9 +118,9 @@ exports.signin = (req, res) => {
             }
             res.status(200).send({
                 // id: user._id,
-                username: user.username,
-                email: user.email,
-                roles: authorities,
+                // username: user.username,
+                // email: user.email,
+                // roles: authorities,
                 accessToken: token
             });
         });

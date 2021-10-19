@@ -30,6 +30,7 @@ exports.changePassword = (req, res) => {
     User.findByIdAndUpdate({ "_id": req.userId }, { "password": bcrypt.hashSync(req.body.password, 8) }, function (err, result) {
         if (err) {
             console.error(err)
+            res.status(500).send({ message: err });
         }
         else {
             return res.status(200).send({ message: "Password changed successfully" });
@@ -46,6 +47,7 @@ exports.uploadProfilePhoto = (req, res) => {
     }, function (err, result) {
         if (err) {
             console.error(err)
+            res.status(500).send({ message: err });
         }
         else {
             return res.status(200).send({ message: "Profile Photo uploaded successfully" });
@@ -54,15 +56,10 @@ exports.uploadProfilePhoto = (req, res) => {
 };
 
 exports.updateProfile = (req, res) => {
-    delete req.body.password
-    delete req.body._id
-    delete req.body.username
-    delete req.body.roles
-    delete req.body.emailAuth
-    delete req.body.phoneAuth
     User.findByIdAndUpdate({ "_id": req.userId }, req.body, function (err, result) {
         if (err) {
             console.error(err)
+            res.status(500).send({ message: err });
         }
         else {
             return res.status(200).send({ message: "Profile updated successfully" });
@@ -76,6 +73,7 @@ exports.getProfile = (req, res) => {
     }, { "password": 0 }, function (err, result) {
         if (err) {
             console.error(err)
+            res.status(500).send({ message: err });
         }
         else {
             return res.status(200).send({ result: result });
@@ -89,6 +87,7 @@ exports.sendEmailOtp = (req, res) => {
     }, { "email": 1 }, function (err, result) {
         if (err) {
             console.error(err)
+            res.status(500).send({ message: err });
         }
         else {
             otp = otpGenerator.generate(6, { alphabets: false, upperCase: false, specialChars: false });
@@ -97,6 +96,7 @@ exports.sendEmailOtp = (req, res) => {
             transporter.sendMail(mailOptions, function (error, info) {
                 if (error) {
                     console.log(error);
+                    res.status(500).send({ message: error });
                 } else {
                     console.log('Email sent: ' + info.response);
                     let current_dateTime = new Date();
@@ -114,6 +114,7 @@ exports.sendEmailOtp = (req, res) => {
                     Otp.findOneAndUpdate({ "validation_type": "email", "user": req.userId }, otp_input, options, function (error, result) {
                         if (error) {
                             console.log(error)
+                            res.status(500).send({ message: error });
                         }
                         else
                             return res.status(200).send('OTP has been sent successfully on email');
@@ -132,6 +133,7 @@ exports.verifyOtp = (req, res) => {
     }, { otp: 1 }, function (err, result) {
         if (err) {
             console.error(err)
+            res.status(500).send({ message: err });
         }
         else {
             console.log(result)
@@ -147,6 +149,7 @@ exports.verifyOtp = (req, res) => {
                     }, data, function (err, result) {
                         if (err) {
                             console.log(err)
+                            res.status(500).send({ message: err });
                         }
                         else {
                             return res.status(200).send('OTP matched');
