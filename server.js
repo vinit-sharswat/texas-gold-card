@@ -30,7 +30,8 @@ const Role = db.role;
 const User = db.user;
 
 db.mongoose
-    .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
+    .connect(dbConfig.DB_CONNECTION_STRING, {
+        tlsCAFile: `./certs/${dbConfig.DB_CERT_FILENAME}`,
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
