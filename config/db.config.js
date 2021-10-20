@@ -1,6 +1,5 @@
 require('dotenv').config({ silent: true });
 module.exports = {
-    HOST: process.env.MONGO_HOST,
-    PORT: process.env.MONGO_PORT,
-    DB: process.env.MONGO_DB
+    DB_CONNECTION_STRING: process.env.MONGO_CONNECTION_STRING,
+    DB_CERT_FILENAME: process.env.MONGO_CERT_FILENAME
 };
