@@ -4,7 +4,7 @@
   "description": "Code to take care of the entire backend application",
   "main": "server.js",
   "scripts": {
-    "start": "npm server.js"
+    "start": "node server.js"
   },
   "keywords": [
     "mongoose",
