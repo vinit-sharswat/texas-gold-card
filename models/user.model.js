@@ -23,6 +23,9 @@ const User = mongoose.model(
         referredBy: String,
         numberOfCards: Number,
         groupAffliations: String,
+        typeOfBusiness: String,
+        numberOfEmployees: String,
+        numberOfLocations: String,
         roles: [
             {
                 type: mongoose.Schema.Types.ObjectId,

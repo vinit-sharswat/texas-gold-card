@@ -108,6 +108,9 @@ function initial() {
                     referredBy: "",
                     numberOfCards: 1,
                     groupAffliations: "",
+                    typeOfBusiness: "",
+                    numberOfEmployees: "",
+                    numberOfLocations: "",
                     roles: [data._id],
                 }).save(err => {
                     if (err) {

@@ -28,7 +28,10 @@ exports.signup = (req, res) => {
         phoneAuth: false,
         referredBy: req.body.referredBy,
         numberOfCards: req.body.numberOfCards,
-        groupAffliations: req.body.groupAffliations
+        groupAffliations: req.body.groupAffliations,
+        typeOfBusiness: req.body.typeOfBusiness,
+        numberOfEmployees: req.body.numberOfEmployees,
+        numberOfLocations: req.body.numberOfLocations
     });
 
     user.save((err, user) => {
