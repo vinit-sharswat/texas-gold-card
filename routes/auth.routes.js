@@ -10,6 +10,74 @@ module.exports = function (app) {
         next();
     });
 
+
+    /**
+    * @swagger
+    * /api/auth/signup:
+    *    post:
+    *     tags:
+    *       - Auth Apis
+    *     name: Sign Up API
+    *     summary: Adds a user
+    *     consumes:
+    *       - application/json
+    *     parameters:
+    *       - name: body
+    *         in: body
+    *         schema:
+    *           type: object
+    *           properties:
+    *             email:
+    *               type: string
+    *             password:
+    *               type: string
+    *               format: password
+    *             applicationType:
+    *               type: string
+    *             phoneNumber:
+    *               type: string
+    *             firstName:
+    *               type: string
+    *             lastName:
+    *               type: string
+    *             dob:
+    *               type: string
+    *             address:
+    *               type: string
+    *             city:
+    *               type: string
+    *             state:
+    *               type: string
+    *             zipCode:
+    *               type: string
+    *             referredBy:
+    *               type: string
+    *             numberOfCards:
+    *               type: integer
+    *             groupAffliations:
+    *               type: string
+    *             typeOfBusiness:
+    *               type: string
+    *             numberOfEmployees:
+    *               type: integer
+    *             numberOfLocations:
+    *               type: integer
+    *             roles:
+    *               type: array
+    *               oneOf:
+    *                 type: string
+    *         required:
+    *           - email
+    *           - password
+    *           - phoneNumber
+    *           - applicationType
+    *           - roles
+    *     responses:
+    *       200:
+    *         description: User registered successfully
+    *       400:
+    *         description: Bad Request
+    */
     app.post("/api/auth/signup",
         [
             verifySignUp.checkDuplicateEmailorPhoneNumber,
@@ -18,5 +86,38 @@ module.exports = function (app) {
         controller.signup
     );
 
+
+    /**
+    * @swagger
+    * /api/auth/signin:
+    *    post:
+    *     tags:
+    *       - Auth Apis
+    *     name: Login API
+    *     summary: Logs in a user
+    *     consumes:
+    *       - application/json
+    *     parameters:
+    *       - name: body
+    *         in: body
+    *         schema:
+    *           type: object
+    *           properties:
+    *             email:
+    *               type: string
+    *             password:
+    *               type: string
+    *               format: password
+    *         required:
+    *           - email
+    *           - password
+    *     responses:
+    *       200:
+    *         description: User found and logged in successfully
+    *       401:
+    *         description: Incorrect Password
+    *       404:
+    *         description: Username not found
+    */
     app.post("/api/auth/signin", controller.signin);
 };
