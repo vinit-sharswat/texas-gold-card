@@ -13,7 +13,7 @@ const app = express();
 app.use(fileupload());
 
 var corsOptions = {
-    origin: "http://localhost:8081"
+    origin: ["http://localhost:8081", "https://texas-gold-card-backend-g4oyr.ondigitalocean.app"]
 };
 
 app.use(cors(corsOptions));
@@ -94,7 +94,7 @@ function initial() {
                     applicationType: "individual",
                     email: "chirpy.coders@gmail.com",
                     password: bcrypt.hashSync("texas-gold-card", 8),
-                    phoneNumber: "919098991882",
+                    phoneNumber: "91-9098991882",
                     firstName: "Chirpy",
                     lastName: "Coders",
                     profilePicture: { "data": "", "contentType": "" },
@@ -108,9 +108,6 @@ function initial() {
                     referredBy: "",
                     numberOfCards: 1,
                     groupAffliations: "",
-                    typeOfBusiness: "",
-                    numberOfEmployees: "",
-                    numberOfLocations: "",
                     roles: [data._id],
                 }).save(err => {
                     if (err) {

@@ -25,7 +25,7 @@ const User = mongoose.model(
         groupAffliations: String,
         typeOfBusiness: String,
         numberOfEmployees: String,
-        numberOfLocations: String,
+        numberOfLocations: Number,
         roles: [
             {
                 type: mongoose.Schema.Types.ObjectId,
