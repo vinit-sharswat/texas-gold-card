@@ -10,6 +10,35 @@ module.exports = function (app) {
         next();
     });
 
+    /**
+    * @swagger
+    * /api/profile/changePassword:
+    *    post:
+    *     tags:
+    *       - Profile Apis
+    *     name: ChangePassword API
+    *     summary: Changes password of a user
+    *     security:
+    *       - accessToken: []
+    *     consumes:
+    *       - application/json
+    *     parameters:
+    *       - name: body
+    *         in: body
+    *         schema:
+    *           type: object
+    *           properties:
+    *             password:
+    *               type: string
+    *               format: password
+    *         required:
+    *           - password
+    *     responses:
+    *       200:
+    *         description: Password changed successfully
+    *       403:
+    *         description: Access Token is not provided
+    */
     app.post("/api/profile/changePassword", [authJwt.verifyToken], profileController.changePassword);
 
     app.post("/api/profile/uploadProfilePhoto", [authJwt.verifyToken], profileController.uploadProfilePhoto);

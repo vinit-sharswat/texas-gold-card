@@ -5,9 +5,10 @@ const express = require("express");
 const cors = require("cors");
 var bcrypt = require("bcryptjs");
 const swaggerUI = require("swagger-ui-express");
+const swaggerJSDoc = require("swagger-jsdoc");
 var fileupload = require("express-fileupload");
 const dbConfig = require("./config/db.config");
-const docs = require('./docs');
+// const docs = require('./docs');
 
 const app = express();
 app.use(fileupload());
@@ -23,7 +24,33 @@ app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(docs));
+const swaggerDefinition = {
+    info: {
+        title: "Swagger Documentation",
+        version: '1.0.0',
+        description: 'Endpoints to test the application'
+    },
+    securityDefinitions: {
+        accessToken: {
+            type: 'apiKey',
+            name: 'x-access-token',
+            scheme: 'bearer',
+            in: 'header',
+        },
+    }
+}
+
+const swaggerOptions = {
+    swaggerDefinition,
+    apis: ['./routes/*.js']
+}
+const swaggerSpec = swaggerJSDoc(swaggerOptions)
+
+app.get('/swaggger.json', function (req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(swaggerSpec);
+})
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
 const db = require("./models");
 const Role = db.role;
