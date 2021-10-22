@@ -34,6 +34,7 @@ module.exports = function (app) {
     *               format: password
     *             applicationType:
     *               type: string
+    *               enum: ["individual", "corporate"]
     *             phoneNumber:
     *               type: string
     *             firstName:
