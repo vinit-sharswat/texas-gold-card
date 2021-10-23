@@ -22,6 +22,8 @@ var mailOptions = {
     text: ''
 };
 
+const twilioClient = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+
 const db = require("../models");
 const User = db.user;
 const Otp = db.otp;
@@ -165,4 +167,53 @@ exports.verifyOtp = (req, res) => {
             }
         }
     })
+}
+
+exports.sendPhoneOtp = (req, res) => {
+    User.findById({
+        "_id": req.userId
+    }, { "phoneNumber": 1 }, function (err, result) {
+        if (err) {
+            console.error(err)
+            res.status(500).send({ message: err });
+        }
+        else {
+            otp = otpGenerator.generate(6, { alphabets: false, upperCase: false, specialChars: false });
+            twilioClient.messages
+                .create({
+                    body: `Dear User,\n\nOTP for Login is :${otp}\n\nKindly note that OTP will expire in 5 minutes.\n\nThis is a auto-generated message.Please do not reply to this number\n\nRegards\nTexas Gold Card`,
+                    from: '+918962343805',
+                    to: `+${result.phoneNumber}`
+                })
+                .then((resp) => {
+                    console.log('Received output from twilio')
+                    console.log(`Response from getPhoneNumberInfo: ${JSON.stringify(resp)}`);
+                    let current_dateTime = new Date();
+
+                    otp_input = {
+                        otp: otp,
+                        created_at: current_dateTime,
+                        expiration_time: AddMinutesToDate(current_dateTime, 5),
+                        validation_type: "phone",
+                        user: req.userId
+                    }
+                    options = { upsert: true, new: true, setDefaultsOnInsert: true };
+
+                    // Find the document
+                    Otp.findOneAndUpdate({ "validation_type": "phone", "user": req.userId }, otp_input, options, function (error, result) {
+                        if (error) {
+                            console.log(error)
+                            res.status(500).send({ message: error });
+                        }
+                        else
+                            return res.status(200).send('OTP has been sent successfully on phone');
+                    });
+
+                })
+                .catch((error) => {
+                    console.log(error)
+                    res.status(500).send({ message: error });
+                })
+        }
+    });
 }

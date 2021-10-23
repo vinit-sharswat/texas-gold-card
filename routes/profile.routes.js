@@ -172,6 +172,24 @@ module.exports = function (app) {
     */
     app.post("/api/profile/verifyOtp", [authJwt.verifyToken], profileController.verifyOtp);
 
+    /**
+    * @swagger
+    * /api/profile/sendPhoneOtp:
+    *    post:
+    *     tags:
+    *       - Profile Apis
+    *     name: Send OTP on Phone API
+    *     summary: Sends OTP to the registered phone
+    *     security:
+    *       - accessToken: []
+    *     responses:
+    *       200:
+    *         description: OTP sent on phone successfully
+    *       403:
+    *         description: Access Token is not provided
+    */
+    app.post("/api/profile/sendPhoneOtp", [authJwt.verifyToken], profileController.sendPhoneOtp);
+
     // app.get("/api/test/all", controller.allAccess);
 
     // app.get("/api/test/user", [authJwt.verifyToken], controller.userBoard);
