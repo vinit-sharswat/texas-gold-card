@@ -106,9 +106,11 @@ module.exports = function (app) {
     *           properties:
     *             email:
     *               type: string
+    *               example: chirpy.coders@gmail.com
     *             password:
     *               type: string
     *               format: password
+    *               example: texas-gold-card
     *         required:
     *           - email
     *           - password
