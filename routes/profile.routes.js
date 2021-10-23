@@ -166,7 +166,7 @@ module.exports = function (app) {
     *               type: string
     *     responses:
     *       200:
-    *         description: Photo uploaded successfully
+    *         description: OTP verified successfully
     *       403:
     *         description: Access Token is not provided
     */
