@@ -167,6 +167,8 @@ module.exports = function (app) {
     *     responses:
     *       200:
     *         description: OTP verified successfully
+    *       400:
+    *         description: OTP has been expired
     *       403:
     *         description: Access Token is not provided
     */
