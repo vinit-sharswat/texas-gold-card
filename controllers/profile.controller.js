@@ -182,7 +182,7 @@ exports.sendPhoneOtp = (req, res) => {
             twilioClient.messages
                 .create({
                     body: `Dear User,\n\nOTP for Login is :${otp}\n\nKindly note that OTP will expire in 5 minutes.\n\nThis is a auto-generated message.Please do not reply to this number\n\nRegards\nTexas Gold Card`,
-                    from: '+918962343805',
+                    from: process.env.TWILIO_FROM_NUMBER,
                     to: `+${result.phoneNumber}`
                 })
                 .then((resp) => {
@@ -211,7 +211,7 @@ exports.sendPhoneOtp = (req, res) => {
 
                 })
                 .catch((error) => {
-                    console.log(error)
+                    console.log(`Error in Twilio Sending Message: ${error.message}`)
                     res.status(500).send({ message: error });
                 })
         }
