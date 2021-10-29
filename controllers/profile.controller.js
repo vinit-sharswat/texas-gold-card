@@ -69,7 +69,7 @@ exports.updateProfile = (req, res) => {
     })
 }
 
-exports.getProfile = (req, res) => {
+exports.getUser = (req, res) => {
     User.findById({
         "_id": req.userId
     }, { "password": 0 }, function (err, result) {
@@ -78,7 +78,7 @@ exports.getProfile = (req, res) => {
             res.status(500).send({ message: err });
         }
         else {
-            return res.status(200).send({ result: result });
+            return res.status(200).send(result);
         }
     })
 }
