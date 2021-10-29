@@ -121,7 +121,23 @@ module.exports = function (app) {
     */
     app.post("/api/profile/updateProfile", [authJwt.verifyToken], profileController.updateProfile);
 
-    app.get("/api/profile/getProfile", [authJwt.verifyToken], profileController.getProfile);
+    /**
+    * @swagger
+    * /api/profile/getUser:
+    *    get:
+    *     tags:
+    *       - Profile Apis
+    *     name: Get User
+    *     summary: Get User Profile
+    *     security:
+    *       - accessToken: []
+    *     responses:
+    *       200:
+    *         description: User details successfully
+    *       403:
+    *         description: Access Token is not provided
+    */
+    app.get("/api/profile/getUser", [authJwt.verifyToken], profileController.getUser);
 
     /**
     * @swagger
