@@ -69,7 +69,7 @@ exports.updateProfile = (req, res) => {
     })
 }
 
-exports.getUser = (req, res) => {
+exports.getUserProfile = (req, res) => {
     User.findById({
         "_id": req.userId
     }, { "password": 0 }, function (err, result) {
