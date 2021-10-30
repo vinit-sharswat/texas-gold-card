@@ -217,3 +217,42 @@ exports.sendPhoneOtp = (req, res) => {
         }
     });
 }
+
+exports.resetPassword = (req, res) => {
+    Otp.findOne({
+        "user": req.userId,
+        "validation_type": "email",
+        "expiration_time": { $gt: new Date() }
+    }, { otp: 1 }, function (err, result) {
+        if (err) {
+            console.error(err)
+            res.status(500).send({ message: err });
+        }
+        else {
+            if (result) {
+                if (result.otp === req.body.otp) {
+                    // OTP Matched
+                    let data = { "password": req.body.password }
+                    User.findOneAndUpdate({
+                        "user": req.userId
+                    }, data, function (err, result) {
+                        if (err) {
+                            console.log(err)
+                            res.status(500).send({ message: err });
+                        }
+                        else {
+                            return res.status(200).send('Password has been reset successfully');
+                        }
+                    })
+                }
+                else {
+                    return res.status(400).send('OTP did not match');
+                }
+            }
+            else {
+                console.log("Record not found for OTP: OTP Expired")
+                return res.status(400).send('OTP has been expired');
+            }
+        }
+    })
+}
