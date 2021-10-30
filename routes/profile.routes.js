@@ -176,6 +176,38 @@ module.exports = function (app) {
 
     /**
     * @swagger
+    * /api/profile/resetPassword:
+    *    post:
+    *     tags:
+    *       - Profile Apis
+    *     name: Reset Password API
+    *     summary: Reset Password with the sent OTP
+    *     security:
+    *       - accessToken: []
+    *     consumes:
+    *       - application/json
+    *     parameters:
+    *       - name: body
+    *         in: body
+    *         schema:
+    *           type: object
+    *           properties:
+    *             password:
+    *               type: string
+    *             otp:
+    *               type: string
+    *     responses:
+    *       200:
+    *         description: Password has been reset successfully
+    *       400:
+    *         description: OTP has been expired
+    *       403:
+    *         description: Access Token is not provided
+    */
+    app.post("/api/profile/resetPassword", [authJwt.verifyToken], profileController.resetPassword);
+
+    /**
+    * @swagger
     * /api/profile/sendPhoneOtp:
     *    post:
     *     tags:
