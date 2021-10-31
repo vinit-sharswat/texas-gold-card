@@ -266,3 +266,28 @@ exports.searchUsersByParams = (req, res) => {
         return res.status(200).send(result);
     })
 }
+
+exports.searchUser = (req, res) => {
+    User.find({
+        $or: [
+            {
+                'firstName': new RegExp(req.body.searchData, "i")
+            },
+            {
+                'lastName': new RegExp(req.body.searchData, "i")
+            },
+            {
+                "email": new RegExp(req.body.searchData, "i")
+            },
+            {
+                "phoneNumber": new RegExp(req.body.searchData, "i")
+            }
+        ]
+    }, { firstName: 1, lastName: 1, email: 1, phoneNumber: 1 }, function (err, result) {
+        if (err) {
+            console.error(err)
+            res.status(500).send({ message: err });
+        }
+        return res.status(200).send(result);
+    })
+}

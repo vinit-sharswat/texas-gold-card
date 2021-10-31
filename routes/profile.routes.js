@@ -253,6 +253,34 @@ module.exports = function (app) {
     */
     app.post("/api/profile/searchUsersByParams", [authJwt.verifyToken], profileController.searchUsersByParams);
 
+    /**
+    * @swagger
+    * /api/profile/searchUser:
+    *    post:
+    *     tags:
+    *       - Profile Apis
+    *     name: Search User by a string
+    *     summary: Get a list of users based on partial string match
+    *     security:
+    *       - accessToken: []
+    *     consumes:
+    *       - application/json
+    *     parameters:
+    *       - name: body
+    *         in: body
+    *         schema:
+    *           type: object
+    *           properties:
+    *             searchData:
+    *               type: string
+    *     responses:
+    *       200:
+    *         description: List of users have been sent
+    *       403:
+    *         description: Access Token is not provided
+    */
+    app.post("/api/profile/searchUser", [authJwt.verifyToken], profileController.searchUser);
+
     // app.get("/api/test/all", controller.allAccess);
 
     // app.get("/api/test/user", [authJwt.verifyToken], controller.userBoard);
