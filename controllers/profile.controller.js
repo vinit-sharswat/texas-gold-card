@@ -69,7 +69,7 @@ exports.updateProfile = (req, res) => {
     })
 }
 
-exports.getUser = (req, res) => {
+exports.getUserProfile = (req, res) => {
     User.findById({
         "_id": req.userId
     }, { "password": 0 }, function (err, result) {
@@ -216,4 +216,78 @@ exports.sendPhoneOtp = (req, res) => {
                 })
         }
     });
+}
+
+exports.resetPassword = (req, res) => {
+    Otp.findOne({
+        "user": req.userId,
+        "validation_type": "email",
+        "expiration_time": { $gt: new Date() }
+    }, { otp: 1 }, function (err, result) {
+        if (err) {
+            console.error(err)
+            res.status(500).send({ message: err });
+        }
+        else {
+            if (result) {
+                if (result.otp === req.body.otp) {
+                    // OTP Matched
+                    let data = { "password": req.body.password }
+                    User.findOneAndUpdate({
+                        "user": req.userId
+                    }, data, function (err, result) {
+                        if (err) {
+                            console.log(err)
+                            res.status(500).send({ message: err });
+                        }
+                        else {
+                            return res.status(200).send('Password has been reset successfully');
+                        }
+                    })
+                }
+                else {
+                    return res.status(400).send('OTP did not match');
+                }
+            }
+            else {
+                console.log("Record not found for OTP: OTP Expired")
+                return res.status(400).send('OTP has been expired');
+            }
+        }
+    })
+}
+
+exports.searchUsersByParams = (req, res) => {
+    User.find(req.body.searchData, { firstName: 1, lastName: 1, id: 1, dob: 1, address: 1, city: 1, state: 1, zipCode: 1, numberOfCards: 1, groupAffliations: 1, typeOfBusiness: 1, numberOfEmployees: 1, numberOfLocations: 1 }, function (err, result) {
+        if (err) {
+            console.error(err)
+            res.status(500).send({ message: err });
+        }
+        return res.status(200).send(result);
+    })
+}
+
+exports.searchUser = (req, res) => {
+    User.find({
+        $or: [
+            {
+                'firstName': new RegExp(req.body.searchData, "i")
+            },
+            {
+                'lastName': new RegExp(req.body.searchData, "i")
+            },
+            {
+                "email": new RegExp(req.body.searchData, "i")
+            },
+            {
+                "phoneNumber": new RegExp(req.body.searchData, "i")
+            }
+        ]
+    }, { firstName: 1, lastName: 1, email: 1, phoneNumber: 1 }, function (err, result) {
+        if (err) {
+            console.error(err)
+            res.status(500).send({ message: err });
+        }
+        return res.status(200).send(result);
+    })
 }

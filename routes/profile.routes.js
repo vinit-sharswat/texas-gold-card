@@ -121,23 +121,7 @@ module.exports = function (app) {
     */
     app.post("/api/profile/updateProfile", [authJwt.verifyToken], profileController.updateProfile);
 
-    /**
-    * @swagger
-    * /api/profile/getUser:
-    *    get:
-    *     tags:
-    *       - Profile Apis
-    *     name: Get User
-    *     summary: Get User Profile
-    *     security:
-    *       - accessToken: []
-    *     responses:
-    *       200:
-    *         description: User details successfully
-    *       403:
-    *         description: Access Token is not provided
-    */
-    app.get("/api/profile/getUser", [authJwt.verifyToken], profileController.getUser);
+    app.get("/api/profile/getUserProfile", [authJwt.verifyToken], profileController.getUserProfile);
 
     /**
     * @swagger
@@ -192,6 +176,38 @@ module.exports = function (app) {
 
     /**
     * @swagger
+    * /api/profile/resetPassword:
+    *    post:
+    *     tags:
+    *       - Profile Apis
+    *     name: Reset Password API
+    *     summary: Reset Password with the sent OTP
+    *     security:
+    *       - accessToken: []
+    *     consumes:
+    *       - application/json
+    *     parameters:
+    *       - name: body
+    *         in: body
+    *         schema:
+    *           type: object
+    *           properties:
+    *             password:
+    *               type: string
+    *             otp:
+    *               type: string
+    *     responses:
+    *       200:
+    *         description: Password has been reset successfully
+    *       400:
+    *         description: OTP has been expired
+    *       403:
+    *         description: Access Token is not provided
+    */
+    app.post("/api/profile/resetPassword", [authJwt.verifyToken], profileController.resetPassword);
+
+    /**
+    * @swagger
     * /api/profile/sendPhoneOtp:
     *    post:
     *     tags:
@@ -207,6 +223,63 @@ module.exports = function (app) {
     *         description: Access Token is not provided
     */
     app.post("/api/profile/sendPhoneOtp", [authJwt.verifyToken], profileController.sendPhoneOtp);
+
+
+    /**
+    * @swagger
+    * /api/profile/searchUsersByParams:
+    *    post:
+    *     tags:
+    *       - Profile Apis
+    *     name: Search Users by certain parameters
+    *     summary: Get a list of users based on certain parameters
+    *     security:
+    *       - accessToken: []
+    *     consumes:
+    *       - application/json
+    *     parameters:
+    *       - name: body
+    *         in: body
+    *         schema:
+    *           type: object
+    *           properties:
+    *             searchData:
+    *               type: object
+    *     responses:
+    *       200:
+    *         description: List of users have been sent
+    *       403:
+    *         description: Access Token is not provided
+    */
+    app.post("/api/profile/searchUsersByParams", [authJwt.verifyToken], profileController.searchUsersByParams);
+
+    /**
+    * @swagger
+    * /api/profile/searchUser:
+    *    post:
+    *     tags:
+    *       - Profile Apis
+    *     name: Search User by a string
+    *     summary: Get a list of users based on partial string match
+    *     security:
+    *       - accessToken: []
+    *     consumes:
+    *       - application/json
+    *     parameters:
+    *       - name: body
+    *         in: body
+    *         schema:
+    *           type: object
+    *           properties:
+    *             searchData:
+    *               type: string
+    *     responses:
+    *       200:
+    *         description: List of users have been sent
+    *       403:
+    *         description: Access Token is not provided
+    */
+    app.post("/api/profile/searchUser", [authJwt.verifyToken], profileController.searchUser);
 
     // app.get("/api/test/all", controller.allAccess);
 
