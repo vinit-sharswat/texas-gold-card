@@ -105,7 +105,7 @@ module.exports = function (app) {
     *               type: string
     *             numberOfCards:
     *               type: integer
-    *             groupAffliations:
+    *             groupAffiliations:
     *               type: string
     *             typeOfBusiness:
     *               type: string

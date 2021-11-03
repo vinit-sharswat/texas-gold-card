@@ -258,7 +258,7 @@ exports.resetPassword = (req, res) => {
 }
 
 exports.searchUsersByParams = (req, res) => {
-    User.find(req.body.searchData, { firstName: 1, lastName: 1, id: 1, dob: 1, address: 1, city: 1, state: 1, zipCode: 1, numberOfCards: 1, groupAffliations: 1, typeOfBusiness: 1, numberOfEmployees: 1, numberOfLocations: 1 }, function (err, result) {
+    User.find(req.body.searchData, { firstName: 1, lastName: 1, id: 1, dob: 1, address: 1, city: 1, state: 1, zipCode: 1, numberOfCards: 1, groupAffiliations: 1, typeOfBusiness: 1, numberOfEmployees: 1, numberOfLocations: 1 }, function (err, result) {
         if (err) {
             console.error(err)
             res.status(500).send({ message: err });

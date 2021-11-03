@@ -135,7 +135,7 @@ function initial() {
                     phoneAuth: true,
                     referredBy: "",
                     numberOfCards: 1,
-                    groupAffliations: "",
+                    groupAffiliations: "",
                     roles: [data._id],
                 }).save(err => {
                     if (err) {

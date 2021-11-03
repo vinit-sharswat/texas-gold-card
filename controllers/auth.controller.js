@@ -28,7 +28,7 @@ exports.signup = (req, res) => {
         phoneAuth: false,
         referredBy: req.body.referredBy,
         numberOfCards: req.body.numberOfCards,
-        groupAffliations: req.body.groupAffliations,
+        groupAffiliations: req.body.groupAffiliations,
         typeOfBusiness: req.body.typeOfBusiness,
         numberOfEmployees: req.body.numberOfEmployees,
         numberOfLocations: req.body.numberOfLocations

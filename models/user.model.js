@@ -22,7 +22,7 @@ const User = mongoose.model(
         phoneAuth: Boolean,
         referredBy: String,
         numberOfCards: Number,
-        groupAffliations: String,
+        groupAffiliations: String,
         typeOfBusiness: String,
         numberOfEmployees: String,
         numberOfLocations: Number,
