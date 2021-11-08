@@ -65,4 +65,78 @@ module.exports = function (app) {
         authJwt.verifyToken
     ],
         staffController.addStaff);
+
+    /**
+    * @swagger
+    * /api/staff/update:
+    *    post:
+    *     tags:
+    *       - Staff Apis
+    *     name: Update Staff API
+    *     summary: updates a staff member
+    *     security:
+    *       - accessToken: []
+    *     consumes:
+    *       - application/json
+    *     parameters:
+    *       - name: body
+    *         in: body
+    *         schema:
+    *           type: object
+    *           properties:
+    *             email:
+    *               type: string
+    *             firstName:
+    *               type: string
+    *             lastName:
+    *               type: string
+    *             dob:
+    *               type: string
+    *             address:
+    *               type: string
+    *             city:
+    *               type: string
+    *             state:
+    *               type: string
+    *             zipCode:
+    *               type: string
+    *     responses:
+    *       200:
+    *         description: Staff profile has been updated successfully
+    *       400:
+    *         description: Staff Email ID is not found
+    *       403:
+    *         description: Access Token is not provided
+    */
+    app.post("/api/staff/update", [authJwt.verifyToken], staffController.updateStaff);
+
+    /**
+    * @swagger
+    * /api/staff/delete:
+    *    post:
+    *     tags:
+    *       - Staff Apis
+    *     name: Delete Staff API
+    *     summary: Deletes a staff member
+    *     security:
+    *       - accessToken: []
+    *     consumes:
+    *       - application/json
+    *     parameters:
+    *       - name: body
+    *         in: body
+    *         schema:
+    *           type: object
+    *           properties:
+    *             email:
+    *               type: string
+    *     responses:
+    *       200:
+    *         description: Staff has been deleted successfully
+    *       403:
+    *         description: Access Token is not provided
+    */
+    app.post("/api/staff/delete", [authJwt.verifyToken], staffController.deleteStaff);
+
+
 }
