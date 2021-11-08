@@ -115,7 +115,7 @@ module.exports = function (app) {
     *               type: integer
     *     responses:
     *       200:
-    *         description: Photo uploaded successfully
+    *         description: Profile updated successfully
     *       403:
     *         description: Access Token is not provided
     */
