@@ -120,10 +120,12 @@ exports.signin = (req, res) => {
                 authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
             }
             res.status(200).send({
-                // id: user._id,
-                // username: user.username,
-                // email: user.email,
-                // roles: authorities,
+                email: user.email,
+                phoneNumber: user.phoneNumber,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                emailAuth: false,
+                phoneAuth: false,
                 accessToken: token
             });
         });
