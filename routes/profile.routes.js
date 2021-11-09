@@ -121,8 +121,6 @@ module.exports = function (app) {
     */
     app.post("/api/profile/updateProfile", [authJwt.verifyToken], profileController.updateProfile);
 
-    app.get("/api/profile/getUserProfile", [authJwt.verifyToken], profileController.getUserProfile);
-
     /**
     * @swagger
     * /api/profile/sendEmailOtp:

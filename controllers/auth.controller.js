@@ -86,7 +86,8 @@ exports.signup = (req, res) => {
 exports.signin = (req, res) => {
     User.findOne({
         email: req.body.email
-    })
+    }, { "_id": 0, "__v": 0 })
+        .lean()
         .populate("roles", "-__v")
         .exec((err, user) => {
             if (err) {
@@ -114,19 +115,9 @@ exports.signin = (req, res) => {
                 expiresIn: 86400 // 24 hours
             });
 
-            var authorities = [];
-
-            for (let i = 0; i < user.roles.length; i++) {
-                authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
-            }
-            res.status(200).send({
-                email: user.email,
-                phoneNumber: user.phoneNumber,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                emailAuth: false,
-                phoneAuth: false,
-                accessToken: token
-            });
+            delete user.password
+            delete user.profilePicture
+            user.token = token
+            res.status(200).send(user)
         });
 };

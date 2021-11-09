@@ -69,20 +69,6 @@ exports.updateProfile = (req, res) => {
     })
 }
 
-exports.getUserProfile = (req, res) => {
-    User.findById({
-        "_id": req.userId
-    }, { "password": 0 }, function (err, result) {
-        if (err) {
-            console.error(err)
-            res.status(500).send({ message: err });
-        }
-        else {
-            return res.status(200).send(result);
-        }
-    })
-}
-
 exports.sendEmailOtp = (req, res) => {
     User.findById({
         "_id": req.userId
@@ -258,13 +244,16 @@ exports.resetPassword = (req, res) => {
 }
 
 exports.searchUsersByParams = (req, res) => {
-    User.find(req.body.searchData, { firstName: 1, lastName: 1, id: 1, dob: 1, address: 1, city: 1, state: 1, zipCode: 1, numberOfCards: 1, groupAffiliations: 1, typeOfBusiness: 1, numberOfEmployees: 1, numberOfLocations: 1 }, function (err, result) {
-        if (err) {
-            console.error(err)
-            res.status(500).send({ message: err });
-        }
-        return res.status(200).send(result);
-    })
+    User.find(req.body.searchData, { _id: 0, __v: 0, profilePicture: 0, password: 0 })
+        .lean()
+        .populate("roles", "-__v")
+        .exec((err, result) => {
+            if (err) {
+                console.error(err)
+                res.status(500).send({ message: err });
+            }
+            return res.status(200).send(result);
+        })
 }
 
 exports.searchUser = (req, res) => {
@@ -283,11 +272,14 @@ exports.searchUser = (req, res) => {
                 "phoneNumber": new RegExp(req.body.searchData, "i")
             }
         ]
-    }, { firstName: 1, lastName: 1, email: 1, phoneNumber: 1 }, function (err, result) {
-        if (err) {
-            console.error(err)
-            res.status(500).send({ message: err });
-        }
-        return res.status(200).send(result);
-    })
+    }, { _id: 0, __v: 0, profilePicture: 0, password: 0 })
+        .lean()
+        .populate("roles", "-__v")
+        .exec((err, result) => {
+            if (err) {
+                console.error(err)
+                res.status(500).send({ message: err });
+            }
+            return res.status(200).send(result);
+        })
 }
