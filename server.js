@@ -81,6 +81,7 @@ require('./routes/auth.routes')(app);
 require('./routes/profile.routes')(app);
 require('./routes/activity.routes')(app);
 require('./routes/staff.routes')(app);
+require('./routes/permissions.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8000;
