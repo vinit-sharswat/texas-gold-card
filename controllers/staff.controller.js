@@ -62,3 +62,15 @@ exports.deleteStaff = (req, res) => {
         }
     })
 };
+
+exports.searchStaffByParams = (req, res) => {
+    Staff.find(req.body.searchData, { _id: 0, __v: 0, profilePicture: 0, password: 0, roles: 0 })
+        .lean()
+        .exec((err, result) => {
+            if (err) {
+                console.error(err)
+                res.status(500).send({ message: err });
+            }
+            return res.status(200).send(result);
+        })
+}

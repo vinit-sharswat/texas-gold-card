@@ -24,12 +24,6 @@ const Staff = mongoose.model(
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "Permissions"
             }
-        ],
-        roles: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Role"
-            }
         ]
     })
 );

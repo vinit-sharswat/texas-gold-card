@@ -138,5 +138,33 @@ module.exports = function (app) {
     */
     app.post("/api/staff/delete", [authJwt.verifyToken], staffController.deleteStaff);
 
+    /**
+    * @swagger
+    * /api/profile/searchStaffByParams:
+    *    post:
+    *     tags:
+    *       - Staff Apis
+    *     name: Search Staff by certain parameters
+    *     summary: Get a list of staff based on certain parameters
+    *     security:
+    *       - accessToken: []
+    *     consumes:
+    *       - application/json
+    *     parameters:
+    *       - name: body
+    *         in: body
+    *         schema:
+    *           type: object
+    *           properties:
+    *             searchData:
+    *               type: object
+    *     responses:
+    *       200:
+    *         description: List of staff have been sent
+    *       403:
+    *         description: Access Token is not provided
+    */
+    app.post("/api/profile/searchStaffByParams", [authJwt.verifyToken], staffController.searchStaffByParams);
+
 
 }
