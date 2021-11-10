@@ -86,7 +86,7 @@ exports.signup = (req, res) => {
 exports.signin = (req, res) => {
     User.findOne({
         email: req.body.email
-    }, { "_id": 0, "__v": 0 })
+    }, { "__v": 0 })
         .lean()
         .populate("roles", "-__v")
         .exec((err, user) => {
@@ -110,13 +110,13 @@ exports.signin = (req, res) => {
                     message: "Invalid Password!"
                 });
             }
-
-            var token = jwt.sign({ id: user.id }, config.secret, {
+            var token = jwt.sign({ id: user._id }, config.secret, {
                 expiresIn: 86400 // 24 hours
             });
 
             delete user.password
             delete user.profilePicture
+            delete user._id
             user.token = token
             res.status(200).send(user)
         });
