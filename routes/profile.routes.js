@@ -243,6 +243,10 @@ module.exports = function (app) {
     *           properties:
     *             searchData:
     *               type: object
+    *             limit:
+    *               type: integer
+    *             skip:
+    *               type: integer
     *     responses:
     *       200:
     *         description: List of users have been sent
@@ -271,6 +275,10 @@ module.exports = function (app) {
     *           properties:
     *             searchData:
     *               type: string
+    *             limit:
+    *               type: integer
+    *             skip:
+    *               type: integer
     *     responses:
     *       200:
     *         description: List of users have been sent

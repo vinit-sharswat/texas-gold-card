@@ -60,6 +60,10 @@ module.exports = function (app) {
     *           properties:
     *             searchData:
     *               type: object
+    *             limit:
+    *               type: integer
+    *             skip:
+    *               type: integer
     *         required:
     *           - activity
     *     responses:

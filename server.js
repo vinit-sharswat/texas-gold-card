@@ -54,7 +54,6 @@ app.get('/swaggger.json', function (req, res) {
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
 const db = require("./models");
-const Role = db.role;
 const User = db.user;
 
 db.mongoose
@@ -90,82 +89,45 @@ app.listen(PORT, () => {
 });
 
 function initial() {
-    Role.estimatedDocumentCount((err, count) => {
-        if (!err && count == 0) {
-            new Role({
-                name: "user"
-            }).save(err => {
-                if (err) {
-                    console.log("error", err);
-                }
+    const superadmin = new User({
+        applicationType: "individual",
+        email: "chirpy.coders@gmail.com",
+        password: bcrypt.hashSync("texas-gold-card", 8),
+        phoneNumber: "91-9098991882",
+        firstName: "Chirpy",
+        lastName: "Coders",
+        profilePicture: "",
+        dob: "07-09-1994",
+        address: "Dalibaba",
+        city: "Satna",
+        state: "Madhya Pradesh",
+        zipCode: "485001",
+        emailAuth: true,
+        phoneAuth: true,
+        referredBy: "",
+        numberOfCards: 1,
+        groupAffiliations: "",
+        roles: "superadmin"
+    })
+    User.findOne({
+        email: "chirpy.coders@gmail.com"
+    }, { "__v": 0 })
+        .lean()
+        .exec((err, user) => {
+            if (err) {
+                console.log("Unable to save the superuser")
+            }
 
-                console.log("added 'user' to roles collection");
-            });
-
-            new Role({
-                name: "admin"
-            }).save(err => {
-                if (err) {
-                    console.log("error", err);
-                }
-
-                console.log("added 'admin' to roles collection");
-            });
-
-            new Role({
-                name: "superuser"
-            }).save((err, data) => {
-                if (err) {
-                    console.log("error", err);
-                }
-
-                console.log("added 'superuser' to roles collection");
-
-                new User({
-                    applicationType: "individual",
-                    email: "chirpy.coders@gmail.com",
-                    password: bcrypt.hashSync("texas-gold-card", 8),
-                    phoneNumber: "91-9098991882",
-                    firstName: "Chirpy",
-                    lastName: "Coders",
-                    profilePicture: { "data": "", "contentType": "" },
-                    dob: "07-09-1994",
-                    address: "Dalibaba",
-                    city: "Satna",
-                    state: "Madhya Pradesh",
-                    zipCode: "485001",
-                    emailAuth: true,
-                    phoneAuth: true,
-                    referredBy: "",
-                    numberOfCards: 1,
-                    groupAffiliations: "",
-                    roles: [data._id],
-                }).save(err => {
+            if (!user) {
+                superadmin.save(err => {
                     if (err) {
                         console.log("error", err);
                     }
                     console.log(`added username:chirpy with password:texas-gold-card to role superuser`);
                 });
-            });
-
-            new Role({
-                name: "member"
-            }).save(err => {
-                if (err) {
-                    console.log("error", err);
-                }
-
-                console.log("added 'member' to roles collection");
-            });
-            new Role({
-                name: "seller"
-            }).save(err => {
-                if (err) {
-                    console.log("error", err);
-                }
-                console.log("added 'seller' to roles collection");
-            });
-
-        }
-    });
+            }
+            else {
+                console.log("SuperAdmin already added")
+            }
+        })
 }

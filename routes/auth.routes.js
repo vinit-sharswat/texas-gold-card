@@ -63,16 +63,11 @@ module.exports = function (app) {
     *               type: integer
     *             numberOfLocations:
     *               type: integer
-    *             roles:
-    *               type: array
-    *               oneOf:
-    *                 type: string
     *         required:
     *           - email
     *           - password
     *           - phoneNumber
     *           - applicationType
-    *           - roles
     *     responses:
     *       200:
     *         description: User registered successfully
@@ -81,8 +76,7 @@ module.exports = function (app) {
     */
     app.post("/api/auth/signup",
         [
-            verifySignUp.checkDuplicateEmailorPhoneNumber,
-            verifySignUp.checkRolesExisted
+            verifySignUp.checkDuplicateEmailorPhoneNumber
         ],
         controller.signup
     );

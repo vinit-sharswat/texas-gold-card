@@ -1,4 +1,4 @@
-const { authJwt, verifyStaffSignUp } = require("../middlewares");
+const { authJwt, verifySignUp } = require("../middlewares");
 const staffController = require("../controllers/staff.controller");
 module.exports = function (app) {
     app.use(function (req, res, next) {
@@ -57,12 +57,15 @@ module.exports = function (app) {
     *     responses:
     *       200:
     *         description: Staff has been added successfully
+    *       401:
+    *         description: Only Superadmin is allowed to add staff
     *       403:
     *         description: Access Token is not provided
     */
     app.post("/api/staff/add", [
-        verifyStaffSignUp.checkDuplicateEmailorPhoneNumber,
-        authJwt.verifyToken
+        verifySignUp.checkDuplicateEmailorPhoneNumber,
+        authJwt.verifyToken,
+        authJwt.getRole
     ],
         staffController.addStaff);
 
@@ -108,7 +111,10 @@ module.exports = function (app) {
     *       403:
     *         description: Access Token is not provided
     */
-    app.post("/api/staff/update", [authJwt.verifyToken], staffController.updateStaff);
+    app.post("/api/staff/update", [
+        authJwt.verifyToken,
+        authJwt.getRole
+    ], staffController.updateStaff);
 
     /**
     * @swagger
@@ -158,6 +164,10 @@ module.exports = function (app) {
     *           properties:
     *             searchData:
     *               type: object
+    *             limit:
+    *               type: integer
+    *             skip:
+    *               type: integer
     *     responses:
     *       200:
     *         description: List of staff have been sent

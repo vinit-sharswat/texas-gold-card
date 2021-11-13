@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const config = require("../config/auth.config");
 const db = require("../models");
 const User = db.user;
-const Role = db.role;
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
@@ -15,10 +14,7 @@ exports.signup = (req, res) => {
         applicationType: req.body.applicationType,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
-        profilePicture: {
-            data: "",
-            contentType: "image/png"
-        },
+        profilePicture: "",
         dob: req.body.dob,
         address: req.body.address,
         city: req.body.city,
@@ -31,7 +27,8 @@ exports.signup = (req, res) => {
         groupAffiliations: req.body.groupAffiliations,
         typeOfBusiness: req.body.typeOfBusiness,
         numberOfEmployees: req.body.numberOfEmployees,
-        numberOfLocations: req.body.numberOfLocations
+        numberOfLocations: req.body.numberOfLocations,
+        roles: "user"
     });
 
     user.save((err, user) => {
@@ -39,56 +36,15 @@ exports.signup = (req, res) => {
             res.status(500).send({ message: err });
             return;
         }
-
-        if (req.body.roles) {
-            Role.find(
-                {
-                    name: { $in: req.body.roles }
-                },
-                (err, roles) => {
-                    if (err) {
-                        res.status(500).send({ message: err });
-                        return;
-                    }
-
-                    user.roles = roles.map(role => role._id);
-                    user.save(err => {
-                        if (err) {
-                            res.status(500).send({ message: err });
-                            return;
-                        }
-
-                        res.send({ message: "User was registered successfully!" });
-                    });
-                }
-            );
-        } else {
-            Role.findOne({ name: "user" }, (err, role) => {
-                if (err) {
-                    res.status(500).send({ message: err });
-                    return;
-                }
-
-                user.roles = [role._id];
-                user.save(err => {
-                    if (err) {
-                        res.status(500).send({ message: err });
-                        return;
-                    }
-
-                    res.send({ message: "User was registered successfully!" });
-                });
-            });
-        }
-    });
-};
+        res.send({ message: "User was registered successfully!" });
+    })
+}
 
 exports.signin = (req, res) => {
     User.findOne({
         email: req.body.email
     }, { "__v": 0 })
         .lean()
-        .populate("roles", "-__v")
         .exec((err, user) => {
             if (err) {
                 res.status(500).send({ message: err });

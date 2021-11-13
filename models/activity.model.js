@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const otp = mongoose.model(
+const activity = mongoose.model(
     "Activity",
     new mongoose.Schema({
         activity: String,
@@ -11,8 +11,9 @@ const otp = mongoose.model(
         user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"
-        }
+        },
+        roles: "string"
     })
 );
 
-module.exports = otp;
+module.exports = activity;

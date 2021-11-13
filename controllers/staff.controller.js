@@ -1,22 +1,19 @@
-const mongoose = require("mongoose");
-const config = require("../config/auth.config");
 const db = require("../models");
-const Staff = db.staff;
-const Permissions = db.permissions;
+const User = db.user;
 
 var bcrypt = require("bcryptjs");
 
 exports.addStaff = (req, res) => {
-    const staff = new Staff({
+    if (!["superadmin"].includes(req.role)) {
+        res.status(401).send({ message: "Only superadmin is allowed to add Staff" });
+    }
+    const user = new User({
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8),
         phoneNumber: req.body.phoneNumber,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
-        profilePicture: {
-            data: "",
-            contentType: "image/png"
-        },
+        profilePicture: "",
         dob: req.body.dob,
         address: req.body.address,
         city: req.body.city,
@@ -24,20 +21,22 @@ exports.addStaff = (req, res) => {
         zipCode: req.body.zipCode,
         emailAuth: false,
         phoneAuth: false,
-        addedBy: req.userId
+        addedBy: req.userId,
+        roles: "staff"
     });
 
-    staff.save((err, result) => {
+    user.save(err => {
         if (err) {
             res.status(500).send({ message: err });
             return;
         }
+
         res.send({ message: "Staff has been added successfully!" });
-    });
-};
+    })
+}
 
 exports.updateStaff = (req, res) => {
-    Staff.find({ "email": req.email }, req.body, function (err, result) {
+    User.findOneAndUpdate({ "email": req.email }, req.body, function (err, result) {
         if (err) {
             console.error(err)
             res.status(500).send({ message: err });
@@ -52,7 +51,7 @@ exports.updateStaff = (req, res) => {
 };
 
 exports.deleteStaff = (req, res) => {
-    Staff.findOneAndDelete({ "email": req.email }, function (err, result) {
+    User.findOneAndDelete({ "email": req.email }, function (err, result) {
         if (err) {
             console.error(err)
             res.status(500).send({ message: err });
@@ -64,7 +63,7 @@ exports.deleteStaff = (req, res) => {
 };
 
 exports.searchStaffByParams = (req, res) => {
-    Staff.find(req.body.searchData, { _id: 0, __v: 0, profilePicture: 0, password: 0, roles: 0 })
+    User.find(req.body.searchData, { _id: 0, __v: 0, profilePicture: 0, password: 0, roles: 0 }, { limit: req.body.limit, skip: req.body.skip })
         .lean()
         .exec((err, result) => {
             if (err) {

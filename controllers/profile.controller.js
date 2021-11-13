@@ -244,7 +244,7 @@ exports.resetPassword = (req, res) => {
 }
 
 exports.searchUsersByParams = (req, res) => {
-    User.find(req.body.searchData, { _id: 0, __v: 0, profilePicture: 0, password: 0 })
+    User.find(req.body.searchData, { _id: 0, __v: 0, profilePicture: 0, password: 0 }, { limit: req.body.limit, skip: req.body.skip })
         .lean()
         .populate("roles", "-__v")
         .exec((err, result) => {
@@ -272,7 +272,7 @@ exports.searchUser = (req, res) => {
                 "phoneNumber": new RegExp(req.body.searchData, "i")
             }
         ]
-    }, { _id: 0, __v: 0, profilePicture: 0, password: 0 })
+    }, { _id: 0, __v: 0, profilePicture: 0, password: 0 }, { limit: req.body.limit, skip: req.body.skip })
         .lean()
         .populate("roles", "-__v")
         .exec((err, result) => {

@@ -9,10 +9,7 @@ const User = mongoose.model(
         phoneNumber: String,
         firstName: String,
         lastName: String,
-        profilePicture: {
-            data: Buffer,
-            contentType: String
-        },
+        profilePicture: String,
         dob: String,
         address: String,
         city: String,
@@ -26,12 +23,7 @@ const User = mongoose.model(
         typeOfBusiness: String,
         numberOfEmployees: String,
         numberOfLocations: Number,
-        roles: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Role"
-            }
-        ]
+        roles: String
     })
 );
 
