@@ -105,7 +105,7 @@ exports.sendEmailOtp = (req, res) => {
                             res.status(500).send({ message: error });
                         }
                         else
-                            return res.status(200).send('OTP has been sent successfully on email');
+                            return res.status(200).send({ message: 'OTP has been sent successfully on email' });
                     });
                 }
             });
@@ -139,17 +139,17 @@ exports.verifyOtp = (req, res) => {
                             res.status(500).send({ message: err });
                         }
                         else {
-                            return res.status(200).send('OTP matched');
+                            return res.status(200).send({ message: 'OTP matched' });
                         }
                     })
                 }
                 else {
-                    return res.status(400).send('OTP did not match');
+                    return res.status(400).send({ message: 'OTP did not match' });
                 }
             }
             else {
                 console.log("Record not found for OTP: OTP Expired")
-                return res.status(400).send('OTP has been expired');
+                return res.status(400).send({ message: 'OTP has been expired' });
             }
         }
     })
@@ -192,7 +192,7 @@ exports.sendPhoneOtp = (req, res) => {
                             res.status(500).send({ message: error });
                         }
                         else
-                            return res.status(200).send('OTP has been sent successfully on phone');
+                            return res.status(200).send({ message: 'OTP has been sent successfully on phone' });
                     });
 
                 })
@@ -227,17 +227,17 @@ exports.resetPassword = (req, res) => {
                             res.status(500).send({ message: err });
                         }
                         else {
-                            return res.status(200).send('Password has been reset successfully');
+                            return res.status(200).send({ message: 'Password has been reset successfully' });
                         }
                     })
                 }
                 else {
-                    return res.status(400).send('OTP did not match');
+                    return res.status(400).send({ message: 'OTP did not match' });
                 }
             }
             else {
                 console.log("Record not found for OTP: OTP Expired")
-                return res.status(400).send('OTP has been expired');
+                return res.status(400).send({ message: 'OTP has been expired' });
             }
         }
     })

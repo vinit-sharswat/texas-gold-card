@@ -41,10 +41,10 @@ exports.updateActivity = (req, res) => {
         }
         else {
             if (result) {
-                return res.status(200).send('Activity Updated');
+                return res.status(200).send({ message: 'Activity Updated' });
             }
             else {
-                res.status(400).send('Activity not found')
+                res.status(400).send({ message: 'Activity not found' })
             }
         }
     })
