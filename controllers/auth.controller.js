@@ -71,7 +71,6 @@ exports.signin = (req, res) => {
             });
 
             delete user.password
-            delete user.profilePicture
             delete user._id
             user.token = token
             res.status(200).send(user)

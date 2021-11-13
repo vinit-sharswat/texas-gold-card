@@ -2,6 +2,8 @@ const bcrypt = require("bcryptjs");
 const nodemailer = require('nodemailer');
 const otpGenerator = require('otp-generator');
 
+const dbConfig = require("../config/db.config");
+
 // To add minutes to the current time
 function AddMinutesToDate(date, minutes) {
     return new Date(date.getTime() + minutes * 60000);
@@ -41,20 +43,30 @@ exports.changePassword = (req, res) => {
 };
 
 exports.uploadProfilePhoto = (req, res) => {
-    User.findByIdAndUpdate({ "_id": req.userId }, {
-        "profilePicture": {
-            data: req.files.userPhoto.data,
-            contentType: req.files.userPhoto.mimetype
-        }
-    }, function (err, result) {
+    dbConfig.s3.upload({
+        Bucket: "tgc", // Add bucket name here
+        ACL: "public-read", // Specify whether anyone with link can access the file
+        Key: `profilePic/${req.userId}.jpg`,
+        Body: Buffer.from(req.files.userPhoto.data, 'binary')
+    }, function (err, data) {
         if (err) {
             console.error(err)
             res.status(500).send({ message: err });
         }
         else {
-            return res.status(200).send({ message: "Profile Photo uploaded successfully" });
+            User.findByIdAndUpdate({ "_id": req.userId }, {
+                "profilePicture": data.Location
+            }, function (err, result) {
+                if (err) {
+                    console.error(err)
+                    res.status(500).send({ message: err });
+                }
+                else {
+                    return res.status(200).send({ message: "Profile Photo uploaded successfully", url: data.Location });
+                }
+            })
         }
-    })
+    });
 };
 
 exports.updateProfile = (req, res) => {
@@ -244,7 +256,7 @@ exports.resetPassword = (req, res) => {
 }
 
 exports.searchUsersByParams = (req, res) => {
-    User.find(req.body.searchData, { _id: 0, __v: 0, profilePicture: 0, password: 0 }, { limit: req.body.limit, skip: req.body.skip })
+    User.find(req.body.searchData, { _id: 0, __v: 0, password: 0 }, { limit: req.body.limit, skip: req.body.skip })
         .lean()
         .populate("roles", "-__v")
         .exec((err, result) => {
@@ -272,7 +284,7 @@ exports.searchUser = (req, res) => {
                 "phoneNumber": new RegExp(req.body.searchData, "i")
             }
         ]
-    }, { _id: 0, __v: 0, profilePicture: 0, password: 0 }, { limit: req.body.limit, skip: req.body.skip })
+    }, { _id: 0, __v: 0, password: 0 }, { limit: req.body.limit, skip: req.body.skip })
         .lean()
         .populate("roles", "-__v")
         .exec((err, result) => {
