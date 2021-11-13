@@ -28,7 +28,7 @@ module.exports = function (app) {
     *         schema:
     *           type: object
     *           properties:
-    *             name:
+    *             activity:
     *               type: string
     *         required:
     *           - name
@@ -43,20 +43,34 @@ module.exports = function (app) {
     /**
     * @swagger
     * /permissions/get:
-    *    get:
+    *    post:
     *     tags:
     *       - Permissions Apis
     *     name: GET Permission API
     *     summary: gets list of permissions
     *     security:
     *       - accessToken: []
+    *     consumes:
+    *       - application/json
+    *     parameters:
+    *       - name: body
+    *         in: body
+    *         schema:
+    *           type: object
+    *           properties:
+    *             searchData:
+    *               type: object
+    *             limit:
+    *               type: integer
+    *             skip:
+    *               type: integer
     *     responses:
     *       200:
     *         description: Permission have been sent successfully
     *       403:
     *         description: Access Token is not provided
     */
-    app.get("/permissions/get", [authJwt.verifyToken], controller.getPermissions);
+    app.post("/permissions/get", [authJwt.verifyToken], controller.getPermissions);
 
     /**
     * @swagger

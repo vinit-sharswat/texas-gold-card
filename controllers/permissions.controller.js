@@ -3,7 +3,8 @@ const Permissions = db.permissions;
 
 exports.addPermission = (req, res) => {
     const permission = new Permissions({
-        name: req.body.name,
+        activity: req.body.activity,
+        addedAt: new Date(),
         addedBy: req.userId
     });
 
@@ -17,7 +18,7 @@ exports.addPermission = (req, res) => {
 };
 
 exports.getPermissions = (req, res) => {
-    Permissions.find({}, { __v: 0 })
+    Permissions.find({}, { __v: 0 }, { limit: req.body.limit, skip: req.body.skip })
         .lean()
         .exec((err, result) => {
             if (err) {
